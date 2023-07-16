@@ -6,10 +6,7 @@ const profiles = [
     accountName: "你的名子" }
 ];
 
-const discord_notify = {
-  on_run: false,
-  on_error: true
-}
+const discord_notify = true
 const myDiscordID = ""
 const discordWebhook = ""
 
@@ -25,16 +22,18 @@ const urlDict = {
 async function main() {
 
   const messages = await Promise.all(profiles.map(autoSignFunction));
-  const hoyolabResp = `${discordPing(discord_notify.on_run)}\n${messages.join('\n\n')}`
-
-  if(discordWebhook) {
-    postWebhook(hoyolabResp);
+  const hoyolabResp = `${messages.join('\n\n')}`
+  
+  if(discord_notify == true){
+    if(discordWebhook) {
+      postWebhook(hoyolabResp);
+    }
   }
 
 }
 
-function discordPing(pingWanted) {
-  if(pingWanted && myDiscordID) {
+function discordPing() {
+  if(myDiscordID) {
     return `<@${myDiscordID}> `;
   } else {
     return '';
@@ -50,7 +49,15 @@ function autoSignFunction({ token, genshin, honkai_star_rail, honkai_3, accountN
   if (honkai_3) urls.push(urlDict.Honkai_3);
 
   const header = {
-    Cookie: token
+    Cookie: token,
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Connection': 'keep-alive',
+    'x-rpc-app_version': '2.34.1',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+    'x-rpc-client_type': '4',
+    'Referer': 'https://act.hoyolab.com/',
+    'Origin': 'https://act.hoyolab.com'
   };
 
   const options = {
@@ -78,7 +85,13 @@ function autoSignFunction({ token, genshin, honkai_star_rail, honkai_3, accountN
       break;
     }
     const isError = checkInResult != "OK";
-    response += `\n${gameName}: ${isError ? discordPing(discord_notify.on_error) : ""}${checkInResult}`;
+    const bannedCheck = JSON.parse(hoyolabResponse).data?.gt_result?.is_risk;
+    if(bannedCheck){
+      response += `\n${gameName}: ${discordPing()} 自動簽到失敗，受到圖形驗證阻擋。`;
+    }
+    else{
+      response += `\n${gameName}: ${isError ? discordPing() : ""}${checkInResult}`;
+    }
   };
 
   return response;

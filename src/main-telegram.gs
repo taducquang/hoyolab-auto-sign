@@ -41,7 +41,15 @@ function autoSignFunction({ token, genshin, honkai_star_rail, honkai_3, accountN
   if (honkai_3) urls.push(urlDict.Honkai_3);
 
   const header = {
-    Cookie: token
+    Cookie: token,
+    'Accept': 'application/json, text/plain, */*',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Connection': 'keep-alive',
+    'x-rpc-app_version': '2.34.1',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+    'x-rpc-client_type': '4',
+    'Referer': 'https://act.hoyolab.com/',
+    'Origin': 'https://act.hoyolab.com'
   };
 
   const options = {
@@ -57,7 +65,13 @@ function autoSignFunction({ token, genshin, honkai_star_rail, honkai_3, accountN
   for (const [i, hoyolabResponse] of httpResponses.entries()) {
     const checkInResult = JSON.parse(hoyolabResponse).message;
     const gameName = Object.keys(urlDict).find(key => urlDict[key] === urls[i])?.replace(/_/g, ' ');
-    response += `\n${gameName}: ${checkInResult}`;
+    const bannedCheck = JSON.parse(hoyolabResponse).data?.gt_result?.is_risk;
+    if(bannedCheck){
+      response += `\n${gameName}: Auto check-in failed due to CAPTCHA blocking.`;
+    }
+    else{
+      response += `\n${gameName}: ${checkInResult}`;
+    }
   };
 
   return response;
