@@ -4,9 +4,9 @@
 </h1>
 
 <p align="center">
-    <img src="https://img.shields.io/github/license/canaria3406/hoyolab-auto-sign">
-    <img src="https://img.shields.io/github/stars/canaria3406/hoyolab-auto-sign">
-    <br><a href="https://github.com/canaria3406/hoyolab-auto-sign/blob/main/README_zh-tw.md">繁體中文</a>．<a href="https://github.com/canaria3406/hoyolab-auto-sign/blob/main/README.md">English</a>
+    <img src="https://img.shields.io/github/license/canaria3406/hoyolab-auto-sign?style=flat-square">
+    <img src="https://img.shields.io/github/stars/canaria3406/hoyolab-auto-sign?style=flat-square">
+    <br><b>繁體中文</b>　<a href="/README.md">English</a>　<a href="/README_ru-ru.md">Русский</a>
 </p>
 
 hoyolab自動簽到script，每月約可自動領取60石，堪比蚊子腿。  
@@ -32,7 +32,7 @@ hoyolab自動簽到script，每月約可自動領取60石，堪比蚊子腿。
 
 ```javascript
 const profiles = [
-  { token: "ltoken=gBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxCY; ltuid=26XXXXX20;", 
+  { token: "ltoken_v2=v2_CANARIAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX3406; ltuid_v2=26XXXXX20;", 
     genshin: true, 
     honkai_star_rail: true, 
     honkai_3: false, 
@@ -40,28 +40,22 @@ const profiles = [
 ];
 ```
 
+> Hoyolab在2023年7月更改了token的規則，從以往的"ltoken"和"ltuid"更改成"ltoken_v2"和"ltuid_v2"。  
+
+> [!IMPORTANT]
+> HoYoLAB 已將 cookie 變更為 HttpOnly cookie。未來將無法再使用 getToken.js 讀取 cookie。  
+> 請改用手動方式複製cookie，以取得ltoken_v2和ltuid_v2。  
+
 <details>
 <summary><b>hoyolab 設定</b></summary>
 
 1. **token** - 請填入hoyolab簽到頁面的token
 
    進入[hoyolab簽到頁面](https://www.hoyolab.com/circles)後，按F12進入console，  
-   貼上以下程式碼後執行即可取得token，**請注意token包含分號;，須一併複製並貼入"括號內"**
-   ```javascript
-   function getCookie(name) {
-     const value = `; ${document.cookie}`;
-     const parts = value.split(`; ${name}=`);
-     if (parts.length === 2) return parts.pop().split(';').shift();
-   }
-   let token = 'ltoken=' + getCookie('ltoken') + '; ltuid=' + getCookie('ltuid') + ';';
-   let ask = confirm(token + '\n\n按下確定複製，並將取得的token貼至Google Apps Script專案當中');
-   if (ask == true) {
-     copy(token);
-     msg = token;
-   } else {
-     msg = 'Cancel';
-   }
-   ```
+   ~~貼上以下程式碼後執行即可取得token，請注意token包含分號;，須一併複製並貼入"括號內"~~
+
+   > HoYoLAB 已將 cookie 變更為 HttpOnly cookie。未來將無法再使用 getToken.js 讀取 cookie。  
+   > 請改用手動方式複製cookie，以取得ltoken_v2和ltuid_v2。  
 
 2. **genshin**
 
@@ -150,7 +144,7 @@ const telegramBotToken = "6XXXXXXXXX:AAAAAAAAAAXXXXXXXXXX8888888888Peko"
 
 ```javascript
 const profiles = [
-  { token: "ltoken=gBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxCY; ltuid=26XXXXX20;", 
+  { token: "account_mid_v2=123xyzabcd_hi; account_id_v2=26XXXXX20; ltoken_v2=v2_CANARIAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX3406; ltmid_v2=123xyzabcd_hi; ltuid_v2=26XXXXX20;", 
     genshin: true, 
     honkai_star_rail: true, 
     honkai_3: false, 
@@ -171,12 +165,12 @@ const discordWebhook = "https://discord.com/api/webhooks/10xxxxxxxxxxxxxxx60/6aX
 
 ```javascript
 const profiles = [
-  { token: "ltoken=gBxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxCY; ltuid=26XXXXX20;", 
+  { token: "account_mid_v2=123xyzabcd_hi; account_id_v2=26XXXXX20; ltoken_v2=v2_CANARIAXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX3406; ltmid_v2=123xyzabcd_hi; ltuid_v2=26XXXXX20;", 
     genshin: true, 
     honkai_star_rail: false, 
     honkai_3: false, 
     accountName: "帳號A" },
-  { token: "ltoken=gAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxNA; ltuid=28XXXXX42;", 
+  { token: "account_mid_v2=456qwertyu_hi; account_id_v2=28XXXXX42; ltoken_v2=v2_GENSHINXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX5566; ltmid_v2=456qwertyu_hi; ltuid_v2=28XXXXX42;", 
     genshin: false, 
     honkai_star_rail: false, 
     honkai_3: true, 
